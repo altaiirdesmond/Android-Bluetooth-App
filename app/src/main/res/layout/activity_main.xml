@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <RelativeLayout
+            android:elevation="5dp"
+            android:background="#1979CA"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="top|center">
+
+            <ImageButton
+                android:id="@+id/btnSetting"
+                android:background="@color/systemColour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/ic_setting"/>
+
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="PROJECT NAME"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:textColor="#FFFFFF"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:background="@drawable/round_corner"
+                android:elevation="5dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/imageStateConveyor"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/checkmark_96"/>
+
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:layout_marginLeft="130dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CONVEYOR"
+                    android:textSize="20dp"
+                    android:fontFamily="monospace"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="45dp"
+                    android:text="STATUS"
+                    android:textColor="#FFFFFF"
+
+                    android:textSize="10dp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="horizontal">
+            <RelativeLayout
+                android:background="@drawable/round_corner"
+                android:elevation="5dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/imageStateShredder"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/electricity_96"/>
+
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:layout_marginLeft="130dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SHREDDER"
+                    android:textSize="20dp"
+                    android:fontFamily="monospace"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="45dp"
+                    android:text="STATUS"
+                    android:textColor="#FFFFFF"
+
+                    android:textSize="10dp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
