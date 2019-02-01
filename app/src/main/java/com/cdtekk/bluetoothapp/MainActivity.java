@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
 import java.util.Set;
@@ -56,6 +57,11 @@ public class MainActivity extends Activity {
                         bluetoothStart();
                         break;
                     case R.id.btnTurnOff:
+                        try {
+                            outputStream.write("Shutdown".getBytes());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         Toast.makeText(getApplicationContext(), "Turn off", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.btnExit:
