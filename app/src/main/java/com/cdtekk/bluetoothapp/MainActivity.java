@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
@@ -12,7 +13,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -20,13 +23,16 @@ import java.io.OutputStream;
 import java.util.Objects;
 import java.util.Set;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements AsyncResponse {
 
+    private Button btnPowerOn;
+    private Button btnPowerOff;
     private PopupMenu popupMenu;
+    private ImageView imageViewConveyorState;
     private ArrayAdapter<String> arrayAdapter;
     private BluetoothAdapter bluetoothAdapter;
     private ConnectBT connectBT;
-    private OutputStream outputStream;
+    private AsyncResponse asyncResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +43,50 @@ public class MainActivity extends Activity {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(enableBtIntent, 1);
 
+        asyncResponse = this;
         ImageButton imageButtonSettings = findViewById(R.id.btnSetting);
+        imageViewConveyorState = findViewById(R.id.imageStateConveyor);
+        btnPowerOff = findViewById(R.id.btnPowerOff);
+        btnPowerOn = findViewById(R.id.btnPowerOn);
         popupMenu = new PopupMenu(this, imageButtonSettings);
         final MenuInflater menuInflater = popupMenu.getMenuInflater();
         menuInflater.inflate(R.menu.setting_menu, popupMenu.getMenu());
+
+        btnPowerOn.setEnabled(false);
+        btnPowerOff.setEnabled(false);
 
         imageButtonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popupMenu.show();
+            }
+        });
+
+        btnPowerOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    ConnectBT.getmSocket().getOutputStream().write("POWEROFF".getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getApplicationContext(), "Turn off", Toast.LENGTH_SHORT).show();
+
+                imageViewConveyorState.setImageDrawable(getDrawable(R.drawable.electricity_96));
+            }
+        });
+
+        btnPowerOn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    ConnectBT.getmSocket().getOutputStream().write("POWERON".getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getApplicationContext(), "Turn on", Toast.LENGTH_SHORT).show();
+
+                imageViewConveyorState.setImageDrawable(getDrawable(R.drawable.checkmark_96));
             }
         });
 
@@ -56,17 +97,23 @@ public class MainActivity extends Activity {
                     case R.id.btnConnect:
                         bluetoothStart();
                         break;
-                    case R.id.btnTurnOff:
-                        try {
-                            outputStream.write("Shutdown".getBytes());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Toast.makeText(getApplicationContext(), "Turn off", Toast.LENGTH_SHORT).show();
-                        break;
                     case R.id.btnExit:
                         finish();
                         System.exit(0);
+                        break;
+                    case R.id.btnDisconnect:
+                        if(ConnectBT.getmSocket() != null){
+                            try {
+                                ConnectBT.getmSocket().close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            connectBT = null;
+
+                            btnPowerOff.setEnabled(false);
+                            btnPowerOn.setEnabled(false);
+                        }
                         break;
                 }
 
@@ -102,14 +149,17 @@ public class MainActivity extends Activity {
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(MainActivity.this);
             builderSingle.setTitle("Connect to");
 
+            final String[] strName = new String[1];
             builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    final String strName = arrayAdapter.getItem(which);
+                    strName[0] = arrayAdapter.getItem(which);
+
                     connectBT = new ConnectBT(
                             getApplicationContext(),
                             bluetoothAdapter,
-                            Objects.requireNonNull(strName).split("\n")[1]);
+                            Objects.requireNonNull(strName[0]).split("\n")[1]);
+                    connectBT.delegate = asyncResponse;
                     connectBT.execute();
                 }
             });
@@ -122,5 +172,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void processingFinish(Boolean output) {
+        btnPowerOn.setEnabled(output);
+        btnPowerOff.setEnabled(output);
     }
 }
