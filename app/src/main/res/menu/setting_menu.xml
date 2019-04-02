@@ -4,8 +4,8 @@
         android:id="@+id/btnConnect"
         android:title="@string/bluetooth" />
     <item
-        android:id="@+id/btnTurnOff"
-        android:title="@string/mainpower" />
+        android:id="@+id/btnDisconnect"
+        android:title="@string/disconnect" />
     <item
         android:id="@+id/btnExit"
         android:title="@string/exit" />

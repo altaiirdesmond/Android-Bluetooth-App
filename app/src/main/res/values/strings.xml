@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">BluetoothApp</string>
     <string name="bluetooth">Connect to</string>
-    <string name="mainpower">Turn off all machine</string>
+    <string name="mainpoweron">Turn on machine</string>
+    <string name="mainpoweroff">Turn off machine</string>
     <string name="exit">Exit</string>
+    <string name="disconnect">Disconnect</string>
 </resources>
