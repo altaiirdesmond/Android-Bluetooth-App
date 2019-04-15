@@ -98,6 +98,25 @@ public class MainActivity extends Activity implements AsyncResponse {
                         bluetoothStart();
                         break;
                     case R.id.btnExit:
+
+                        // Free all resources first
+                        if(ConnectBT.getmSocket() != null){
+                            try {
+                                ConnectBT.getmSocket().close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            connectBT = null;
+
+                            btnPowerOff.setEnabled(false);
+                            btnPowerOn.setEnabled(false);
+
+                            bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                            bluetoothAdapter.disable();
+                        }
+
+                        // Then exit
                         finish();
                         System.exit(0);
                         break;
@@ -113,6 +132,9 @@ public class MainActivity extends Activity implements AsyncResponse {
 
                             btnPowerOff.setEnabled(false);
                             btnPowerOn.setEnabled(false);
+
+                            bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                            bluetoothAdapter.disable();
                         }
                         break;
                 }
@@ -132,8 +154,6 @@ public class MainActivity extends Activity implements AsyncResponse {
                 // Make user enable bluetooth
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, 1);
-
-                return;
             }
 
             Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();

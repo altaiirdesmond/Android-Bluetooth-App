@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BluetoothApp</string>
+    <string name="app_name">Trash Collector Controller</string>
     <string name="bluetooth">Connect to</string>
     <string name="mainpoweron">Turn on machine</string>
     <string name="mainpoweroff">Turn off machine</string>
